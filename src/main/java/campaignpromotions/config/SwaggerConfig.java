@@ -17,7 +17,6 @@ import java.util.Collections;
  */
 @Configuration
 public class SwaggerConfig {
-
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiDetails())
