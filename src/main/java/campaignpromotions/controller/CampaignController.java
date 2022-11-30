@@ -1,13 +1,12 @@
 package campaignpromotions.controller;
 
 import campaignpromotions.models.entities.Campaigns;
+import campaignpromotions.service.CampaignPriceService;
 import campaignpromotions.service.CampaignService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,14 +15,23 @@ import java.util.List;
 public class CampaignController {
 
     private final CampaignService campaignService;
+    private final CampaignPriceService campaignPriceService;
 
-    public CampaignController(@Qualifier("campaignServiceImpl") CampaignService campaignService) {
+    public CampaignController(@Qualifier("campaignServiceImpl") CampaignService campaignService,
+                              @Qualifier("campaignPriceServiceImpl") CampaignPriceService campaignPriceService) {
         this.campaignService = campaignService;
+        this.campaignPriceService = campaignPriceService;
     }
 
-    @GetMapping("precios")
+    @GetMapping("/precios")
     @ResponseStatus(HttpStatus.OK)
     public List<Campaigns> listPrice() {
         return campaignService.findAll();
+    }
+
+    @PostMapping("campaign")
+    @ResponseStatus(HttpStatus.OK)
+    public Campaigns campaigns(@RequestBody Integer cantUsuario) {
+        return campaignPriceService.getCampaignPrice(cantUsuario);
     }
 }
